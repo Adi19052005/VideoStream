@@ -1,0 +1,27 @@
+.button-styles {
+  /* Handled in App.css */
+}
+
+.btn-group {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-icon {
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.btn-text {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: none;
+}
+
+.btn-text:hover {
+  color: #ff5555;
+}

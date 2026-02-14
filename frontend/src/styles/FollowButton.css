@@ -1,0 +1,20 @@
+.follow-btn{
+  padding: 8px 14px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.follow-btn.following{
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.follow-btn:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+}
