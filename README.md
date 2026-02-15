@@ -1,178 +1,188 @@
-🎬 VideoStream
 
-VideoStream is a cloud-native, scalable, and secure video streaming platform designed for modern web applications. It enables users to upload, process, and stream videos using adaptive HLS streaming, backed by a CDN (AWS CloudFront), protected by AWS WAF, and securely stored in AWS S3 with IAM-based access control.
+# 🎬 VideoStream
 
-Videos are processed using FFmpeg by an independent microservice to generate HLS segments and playlists. All components are containerized and orchestrated via Kubernetes (kind) for scalable deployments.
+**VideoStream** is a cloud-native, scalable, and secure video streaming platform designed for modern web applications. It allows users to **upload, process, and stream videos** using adaptive **HLS (HTTP Live Streaming)**.
 
-🚀 Features
+The platform leverages:
 
-🔐 Authentication & user session management
+* ☁️ **AWS S3** for secure storage
+* 🌍 **AWS CloudFront** for global CDN delivery
+* 🛡️ **AWS WAF** for edge protection
+* 🔑 **IAM-based access control** (no public buckets)
+* ⚙️ **FFmpeg microservice** for video processing
+* 🐳 **Docker** for containerization
+* ☸️ **Kubernetes (kind)** for orchestration
 
-📤 Video uploads with secure backend storage
+---
 
-🎥 Adaptive HLS streaming for smooth playback
+## 🚀 Features
 
-☁️ Secure video storage using AWS S3
+* 🔐 Authentication & session management
+* 📤 Secure video uploads
+* 🎥 Adaptive HLS streaming for smooth playback
+* ☁️ Private AWS S3 storage
+* 🌍 Low-latency global streaming via CloudFront
+* 🛡️ Edge protection with AWS WAF
+* 🔑 IAM-controlled access (no public S3 buckets)
+* ⚙️ Independent video processing service (FFmpeg)
+* 🐳 Fully Dockerized environment
+* ☸️ Kubernetes-ready architecture
 
-🌍 Global delivery using AWS CloudFront CDN
+---
 
-🛡️ Edge protection via AWS WAF
+## 📌 Architecture Diagram
 
-🔑 IAM-controlled access (no public buckets)
+![Image](https://assets.community.aws/a/2wAdBq3xGkJ4227qbF6eLbcrA9Z/vide.webp?imgSize=1000x416)
 
-⚙️ Video processing via FFmpeg (separate service)
+![Image](https://docs.aws.amazon.com/images/solutions/latest/security-automations-for-aws-waf/images/aws-waf-architecture-overview.png)
 
-🐳 Dockerized for reproducible environments
+![Image](https://miro.medium.com/1%2A2CxsgsyIyxEyjk4Lz7q9qQ.png)
 
-☸️ Scalable on Kubernetes (kind)
+![Image](https://miro.medium.com/v2/resize%3Afit%3A1400/1%2A4qaMLbGF2hEIEIXVFk7pNg.png)
 
-📌 Architecture Diagram
+**High-Level Flow**
 
-graph TB
+1. User requests video via browser/app
+2. CloudFront handles global delivery
+3. AWS WAF filters malicious traffic
+4. Backend API manages logic & permissions
+5. Raw videos stored in private S3 bucket
+6. Processing service transcodes using FFmpeg
+7. HLS assets stored in processed S3 bucket
+8. CloudFront streams adaptive video
 
-    subgraph Client
-        U[User / Browser / App]
-    end
+---
 
-    subgraph CDN
-        CF["AWS CloudFront<br>Content Delivery Network"]
-        WAF["AWS WAF<br>Web Application Firewall"]
-    end
+## 🧠 Design Overview
 
-    subgraph Compute
-        BE["Backend API<br>(Node.js / Express)"]
-        FR["Frontend UI<br>(React)"]
-        VP["Video Processing Service"]
-        FF["FFmpeg Transcoder"]
-    end
+### 🔒 Secure Storage
 
-    subgraph Storage
-        S3R["S3 Raw Videos<br>(Private)"]
-        S3P["S3 Processed HLS<br>(Private)"]
-    end
+* AWS S3 stores **raw uploads** and **processed HLS assets**
+* Buckets remain **private**
+* Access controlled via **IAM roles** and **signed CloudFront URLs**
 
-    U --> CF
-    CF --> WAF
-    WAF --> BE
+---
 
-    BE -->|Serve Frontend| FR
-    FR --> CF
+### 🌍 Global Streaming
 
-    BE -->|Upload / Manage Videos| S3R
-    S3R --> VP
+* **AWS CloudFront** ensures low-latency global delivery
+* Edge caching improves playback performance
+* **AWS WAF** protects against unwanted traffic
 
-    VP --> FF
-    FF -->|HLS Output| S3P
+---
 
-    S3P --> CF
-    CF --> U
-🧠 Design Overview
-🔒 Secure Storage
+### 🎥 HLS Adaptive Streaming
 
-AWS S3 stores both raw uploaded videos and final HLS assets.
+Videos are processed into:
 
-Buckets are not publicly accessible.
+* Multiple resolutions & bitrates
+* `.ts` segment files
+* `.m3u8` playlists
 
-Access is handled by the backend via IAM roles and signed CloudFront URLs.
+Generated using **FFmpeg** and stored in the processed S3 bucket for adaptive playback.
 
-🌍 Global Streaming
+---
 
-AWS CloudFront delivers video segments and manifests globally.
+## 🗂️ Repository Structure
 
-Console caches content for low latency worldwide.
-
-AWS WAF sits in front to block malicious or unauthorized traffic.
-
-🎥 HLS Streaming
-
-Video files are:
-
-Transcoded into multiple resolutions/bitrates.
-
-Split into segment files (.ts) and playlists (.m3u8) using FFmpeg.
-
-Stored in processed S3 bucket.
-
-Served through CloudFront to clients.
-
-🗂️ Repo Structure
+```
 VideoStream/
-├── backend/                  # API server & logic
-├── frontend/                 # React UI
-├── docker-compose.yml        # Local dev multi-container setup
+├── backend/              # Node.js / Express API
+├── frontend/             # React UI
+├── docker-compose.yml    # Local multi-container setup
 ├── .gitignore
 └── README.md
-Video processing service (FFmpeg logic) lives in a separate repository:
-https://github.com/Adi19052005/videoprocessing
+```
 
-🛠️ Prerequisites
+🎞️ **Video Processing Service (FFmpeg Logic):**
+[https://github.com/Adi19052005/videoprocessing](https://github.com/Adi19052005/videoprocessing)
 
-To run this project, you will need:
+---
 
-Docker & Docker Compose
+## 🛠️ Prerequisites
 
-Kind (Kubernetes in Docker)
+To run this project, install:
 
-AWS Account with:
+* Docker & Docker Compose
+* Kind (Kubernetes in Docker)
+* AWS Account with:
 
-S3 buckets
+  * S3 Buckets
+  * CloudFront Distribution
+  * AWS WAF
+  * IAM Roles / Credentials
 
-CloudFront distribution
+Node.js is optional (only for non-container runs).
 
-WAF enabled
+---
 
-IAM roles configured
+## ⚙️ Environment Configuration
 
-Node.js (optional — only if running services outside containers)
+Create a `.env` file inside **backend/**:
 
-⚙️ Environment Configuration
-
-Create a .env file in backend/ with the following:
-
+```
 PORT=5000
 MONGO_URI=your_mongo_uri
 JWT_SECRET=your_jwt_secret
 
 AWS_REGION=your_region
-AWS_ACCESS_KEY_ID=your_aws_key_id
-AWS_SECRET_ACCESS_KEY=your_aws_secret
+AWS_ACCESS_KEY_ID=your_key
+AWS_SECRET_ACCESS_KEY=your_secret
+
 AWS_S3_BUCKET=raw_videos_bucket
-PROCESSED_BUCKET_NAME=processed_videos_bucket
+PROCESSED_BUCKET_NAME=processed_bucket
+
 CLOUDFRONT_DOMAIN=your_cloudfront_domain
 CLOUDFRONT_KEY_PAIR_ID=your_key_pair
+```
 
-🐳 Running Locally (Docker Compose)
+---
 
-To run the platform locally for development:
+## 🐳 Running Locally (Docker)
+
+Start the full stack:
+
+```bash
 docker compose up -d
+```
 
-☸️ Running on Kubernetes (kind)
+---
 
-Install Kind:
-https://kind.sigs.k8s.io
+## ☸️ Running on Kubernetes (kind)
 
-Create a cluster:
+Create cluster:
+
+```bash
 kind create cluster
+```
 
-Apply deployment manifests (to be added in future release):
+Deploy manifests (future release):
+
+```bash
 kubectl apply -f k8s/
+```
 
-📦 Related Repositories
+---
 
-🔄 Video Processing (FFmpeg)
-https://github.com/Adi19052005/videoprocessing
+## 📦 Related Repositories
 
-Handles video transcoding and HLS generation.
+🔄 **Video Processing Service (FFmpeg):**
+[https://github.com/Adi19052005/videoprocessing](https://github.com/Adi19052005/videoprocessing)
 
-💡 Security Principles
+Handles:
 
+* Video transcoding
+* HLS generation
+* Multi-resolution outputs
 
-| Concern             | Implementation          |
-| ------------------- | ----------------------- |
-| No public S3 access | IAM roles & signed URLs |
-| CDN caching         | CloudFront distribution |
-| Edge security       | AWS WAF                 |
-| Microservices       | Component separation    |
-| Config isolation    | Environment variables   |
+---
 
+## 💡 Security Principles
 
+| Concern              | Implementation             |
+| -------------------- | -------------------------- |
+| Private video access | IAM roles & signed URLs    |
+| Global performance   | CloudFront CDN caching     |
+| Edge security        | AWS WAF                    |
+| Scalability          | Microservices & Kubernetes |
+| Config isolation     | Environment variables      |
