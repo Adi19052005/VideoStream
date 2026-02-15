@@ -1,0 +1,46 @@
+services:
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: videostream-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+
+  backend:
+    image: itsadi1905/videostream-backend:latest
+    container_name: authlivestream-backend
+    environment:
+      - PORT=5000
+      - MONGO_URI=mongodb://dummy_user:dummy_pass@dummy_host:27017/dummydb
+      - JWT_SECRET=dummy_jwt_secret_key
+      - AWS_REGION=dummy-region-1
+      - AWS_ACCESS_KEY_ID=DUMMYACCESSKEY123
+      - AWS_SECRET_ACCESS_KEY=DUMMYSECRETKEY123
+      - AWS_S3_BUCKET=dummy-bucket-name
+      - PROCESSED_BUCKET_NAME=dummy-processed-bucket
+      - CLOUDFRONT_DOMAIN=https://dummy-cloudfront-domain.net
+      - CLOUDFRONT_KEY_PAIR_ID=DUMMYKEYPAIRID
+    restart: unless-stopped
+
+  frontend:
+    image: itsadi1905/videostream-frontend:latest
+    container_name: authlivestream-frontend
+    restart: unless-stopped
+
+  videoprocessor:
+    image: itsadi1905/videoprocessing:latest
+    container_name: authlivestream-videoprocessor
+    environment:
+      - MONGO_URI=mongodb://dummy_user:dummy_pass@dummy_host:27017/dummydb
+      - AWS_REGION=dummy-region-1
+      - AWS_ACCESS_KEY_ID=DUMMYACCESSKEY123
+      - AWS_SECRET_ACCESS_KEY=DUMMYSECRETKEY123
+      - AWS_S3_BUCKET=dummy-bucket-name
+      - PROCESSED_BUCKET_NAME=dummy-processed-bucket
+    restart: unless-stopped
