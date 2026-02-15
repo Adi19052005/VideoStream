@@ -32,13 +32,10 @@ The platform leverages:
 
 ## 📌 Architecture Diagram
 
-![Image](https://assets.community.aws/a/2wAdBq3xGkJ4227qbF6eLbcrA9Z/vide.webp?imgSize=1000x416)
+
 
 ![Image](https://docs.aws.amazon.com/images/solutions/latest/security-automations-for-aws-waf/images/aws-waf-architecture-overview.png)
 
-![Image](https://miro.medium.com/1%2A2CxsgsyIyxEyjk4Lz7q9qQ.png)
-
-![Image](https://miro.medium.com/v2/resize%3Afit%3A1400/1%2A4qaMLbGF2hEIEIXVFk7pNg.png)
 
 **High-Level Flow**
 
