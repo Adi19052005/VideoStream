@@ -1,1 +1,17 @@
-🎞️ Video Processing Service (FFmpeg Logic): https://github.com/Adi19052005/videoprocessing
+# 🎞️ Video Processing Service
+
+This project uses a dedicated video processing microservice for transcoding and HLS generation.
+
+👉 **Repository Link:**  
+https://github.com/Adi19052005/videoprocessing
+
+---
+
+## What does this service do?
+
+- Transcodes videos using FFmpeg
+- Generates adaptive HLS streams
+- Produces multi-resolution outputs
+- Stores processed assets in S3
+
+For implementation details, deployment steps, and architecture, please visit the repository above.
