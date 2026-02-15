@@ -1,4 +1,5 @@
 
+
 # 🎬 VideoStream
 
 **VideoStream** is a cloud-native, scalable, and secure video streaming platform designed for modern web applications. It allows users to **upload, process, and stream videos** using adaptive **HLS (HTTP Live Streaming)**.
@@ -33,8 +34,8 @@ The platform leverages:
 ## 📌 Architecture Diagram
 
 
+![Image](https://miro.medium.com/1%2A2CxsgsyIyxEyjk4Lz7q9qQ.png)
 
-![Image](https://docs.aws.amazon.com/images/solutions/latest/security-automations-for-aws-waf/images/aws-waf-architecture-overview.png)
 
 
 **High-Level Flow**
@@ -183,3 +184,5 @@ Handles:
 | Edge security        | AWS WAF                    |
 | Scalability          | Microservices & Kubernetes |
 | Config isolation     | Environment variables      |
+
+---
